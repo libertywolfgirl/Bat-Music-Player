@@ -3,10 +3,16 @@ import cors from "cors";
 import lyricsFinder from "lyrics-finder";
 import SpotifyWebApi from "spotify-web-api-node";
 import dotenv from "dotenv";
+import path from 'path';
+import { fileURLToPath } from "url";
 
 const app = express();
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, '/build')));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,6 +63,10 @@ app.get("/lyrics", async (req, res) => {
   const { artist, track } = req.query;
   const lyrics = (await lyricsFinder(artist, track)) || "No Lyrics Found";
   res.json({ lyrics });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/build/index.html'));
 });
 
 app.listen(PORT, (err) => {
