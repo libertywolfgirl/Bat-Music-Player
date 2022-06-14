@@ -25,7 +25,7 @@ const Dashboard = ({ code }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
   const [lyrics, setLyrics] = useState("");
-
+  
   function chooseTrack(track) {
     setPlayingTrack(track);
     setSearch("");
@@ -37,7 +37,7 @@ const Dashboard = ({ code }) => {
     (async () => {
       const {
         data: { lyrics },
-      } = await axios.get(`${process.env.REACT_APP_BASE_URL}/lyrics`, {
+      } = await axios.get(`/lyrics`, {
         params: {
           track: playingTrack.title,
           artist: playingTrack.artist,
@@ -55,7 +55,6 @@ const Dashboard = ({ code }) => {
   useEffect(() => {
     if (!search) return setSearchResults([]);
     if (!accessToken) return;
-
     let cancel = false;
     (async () => {
       const { body } = await spotifyApi.searchTracks(search);

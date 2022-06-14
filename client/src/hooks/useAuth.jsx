@@ -30,7 +30,7 @@ const useAuth = (code) => {
       try {
         const {
           data: { access_token, expires_in },
-        } = await axios.post(`${process.env.REACT_APP_BASE_URL}/refresh`, {
+        } = await axios.post(`/refresh`, {
           refreshToken,
         });
         setAccessToken(access_token);
